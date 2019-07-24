@@ -10,33 +10,23 @@ find_package(catkin REQUIRED COMPONENTS
     )
 
 find_package(cmake_modules)
-find_package(gtsam)
 find_package(Eigen)
-
-add_message_files(DIRECTORY msg FILES Apriltag.msg Apriltags.msg)
-generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 catkin_package()
 
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
-    ${GTSAM_INCLUDE_DIRS}
     ${Eigen_INCLUDE_DIRS}
     )
 
 # aprilslam library
 add_library(${PROJECT_NAME}
-    src/mapper/mapper.cpp
-    src/mapper/tag_map.cpp
     src/utils/utils.cpp
-    src/visualizer/visualizer.cpp
     src/detector/detector_node.cpp
-    src/mapper/mapper_node.cpp
     )
 target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
-    ${GTSAM_LIBRARIES}
     )
 
 # detector node
@@ -44,13 +34,6 @@ add_executable(detector_node
     src/detector/detector_main.cpp
     )
 target_link_libraries(detector_node
-    ${PROJECT_NAME}
-    )
-
-add_executable(mapper_node
-    src/mapper/mapper_main.cpp
-    )
-target_link_libraries(mapper_node
     ${PROJECT_NAME}
     )
 
